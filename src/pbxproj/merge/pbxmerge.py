@@ -323,8 +323,8 @@ class XCBuildConfigurationMerger3(_SimpleDictMerger3):
             #and we assume that items are unique
             dict_values = Value3(values.base[conflict], values.mine[conflict], values.theirs[conflict])
 
-            dict_values_diff = diff3_set(OrderedSet(dict_values.base), OrderedSet(dict_values.mines), OrderedSet(dict_values.theirs))
-            resolved_conflicts[conflict] = tuple(merge_ordered_set(dict_values_diff, dict_values.base, dict_values.mines, dict_values.theirs))
+            dict_values_diff = diff3_set(OrderedSet(dict_values.base), OrderedSet(dict_values.mine), OrderedSet(dict_values.theirs))
+            resolved_conflicts[conflict] = tuple(merge_ordered_set(dict_values_diff, dict_values.base, dict_values.mine, dict_values.theirs))
 
             values_diff.conflicting.remove(conflict) #mark as merged
 
