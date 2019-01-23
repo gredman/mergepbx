@@ -311,6 +311,7 @@ class XCBuildConfigurationMerger3(_SimpleDictMerger3):
         values_diff = diff3_dict(values.base, values.mine, values.theirs)
 
         resolved_conflicts = {}
+        conflicts_to_remove = []
         for conflict in values_diff.conflicting:
             #check if conflict happens with a tuple or another list-like type
             for value in values:
@@ -326,7 +327,10 @@ class XCBuildConfigurationMerger3(_SimpleDictMerger3):
             dict_values_diff = diff3_set(OrderedSet(dict_values.base), OrderedSet(dict_values.mine), OrderedSet(dict_values.theirs))
             resolved_conflicts[conflict] = tuple(merge_ordered_set(dict_values_diff, dict_values.base, OrderedSet(dict_values.mine), OrderedSet(dict_values.theirs)))
 
-            values_diff.conflicting.remove(conflict) #mark as merged
+            conflicts_to_remove.append(conflict)
+
+        for conflict_to_remove in conflicts_to_remove:
+            values_diff.conflicting.remove(conflict_to_remove)  #mark as merged
 
         result[attribute] = merge_ordered_dict(values_diff, values.base, values.mine, values.theirs)
         for conflict, resolution in resolved_conflicts.iteritems():
