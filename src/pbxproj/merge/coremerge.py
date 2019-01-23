@@ -101,7 +101,7 @@ def merge_key_order(result, base, mine, theirs):
     keys_diff = diff3_set(base_keys, mine_keys, theirs_keys)
     keys_merged = merge_ordered_set(keys_diff, base_keys, mine_keys, theirs_keys)
 
-    result = OrderedDict((key, result[key]) for key in keys_merged)
+    result = OrderedDict((key, result[key]) for key in keys_merged if result.has_key(key))
 
     return result 
 
