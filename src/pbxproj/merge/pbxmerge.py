@@ -232,7 +232,7 @@ class PBXFileReferenceMerger3(_SimpleDictMerger3):
             return result
 
         if not base_lastKnownFileType == mine_lastKnownFileType or not base_lastKnownFileType == theirs_lastKnownFileType:
-            #if last known file type is different, well, then we delete it simply and let xcode figure out what it should do
+            #if last known file type is different, well, we take a guess at it below
             #if however base is empty, then we set it to a known file type
             if base_lastKnownFileType == "":
                 if mine_lastKnownFileType == theirs_lastKnownFileType:
@@ -243,6 +243,10 @@ class PBXFileReferenceMerger3(_SimpleDictMerger3):
                 lastKnownFileType = ""
         else:
             lastKnownFileType = base_lastKnownFileType
+
+
+        if lastKnownFileType == "":
+            lastKnownFileType = mine_lastKnownFileType or theirs_lastKnownFileType or base_lastKnownFileType
 
         result["lastKnownFileType"] = lastKnownFileType
 
