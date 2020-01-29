@@ -29,6 +29,10 @@ class PBXBuildFile(PBXISA, PBXISADictionaryBound):
             fileRef = self.fileRef
             file = project.get_objects().get(fileRef)
             name = file.get_name(project)
+        elif self.has_attr("productRef"):
+            productRef = self.productRef
+            product = project.get_objects().get(productRef)
+            name = product.get_name(project)
         else:
             name = "(null)"
         container = project.phase_of_object(self._identifier)
@@ -180,6 +184,20 @@ class XCConfigurationList(PBXISA, PBXISADictionaryBound):
                 if object.buildConfigurationList == identifier:
                     targets.append(object)
         return targets
+        
+class XCSwiftPackageProductDependency(PBXISA, PBXISADictionaryBound):
+    def __init__(self, *args, **kwargs):
+        super(XCSwiftPackageProductDependency, self).__init__(*args, **kwargs)
+
+    def get_name(self, project):
+        return self.productName
+
+class XCRemoteSwiftPackageReference(PBXISA, PBXISADictionaryBound):
+    def __init__(self, *args, **kwargs):
+        super(XCRemoteSwiftPackageReference, self).__init__(*args, **kwargs)
+
+    def get_name(self, project):
+        return '%s "%s"' % (self.isa, self.repositoryURL)
 
 class XCVersionGroup(PBXISA, PBXISADictionaryBound):
     def __init__(self, *args, **kwargs):
